@@ -1,23 +1,32 @@
-import { createI18n } from 'vue-i18n'
+import { createI18n } from "vue-i18n";
+import en from "@/locales/en/index.json";
+import th from "@/locales/th/index.json";
 
 const messages = {
-  en: {
-    message: {
-      welcome: 'Welcome'
-    }
-  },
-  th: {
-    message: {
-      welcome: 'ยินดีต้อนรับ'
-    }
+  en,
+  th,
+};
+
+const savedLocale = (() => {
+  try {
+    return localStorage.getItem("locale") || "en";
+  } catch (e) {
+    return "en";
   }
-}
+})();
 
 const i18n = createI18n({
   legacy: false,
-  locale: 'en',
-  fallbackLocale: 'en',
-  messages
-})
+  locale: savedLocale,
+  fallbackLocale: "en",
+  messages,
+});
 
-export default i18n
+export function setLocale(locale) {
+  i18n.global.locale.value = locale;
+  try {
+    localStorage.setItem("locale", locale);
+  } catch (e) {}
+}
+
+export default i18n;
