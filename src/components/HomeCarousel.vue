@@ -17,7 +17,7 @@
 
         <p
           :class="[
-            'text-lg opacity-80 carousel-subtitle',
+            'mt-2 text-lg opacity-80 carousel-subtitle',
             { changed: titleChanged, hovered: isAnyHovered },
           ]"
         >
@@ -113,7 +113,7 @@ function createCameraAndRenderer() {
   const { clientWidth, clientHeight } = container.value;
 
   camera = new THREE.PerspectiveCamera(
-    45,
+    40,
     clientWidth / clientHeight,
     0.1,
     1000,
@@ -195,7 +195,7 @@ function updatePositions() {
       card.userData.targetX = diff * spread;
       card.userData.targetZ = Math.abs(diff) * depth;
       card.userData.targetYRot = diff * rotation;
-      const opacity = THREE.MathUtils.clamp(1 - Math.abs(diff) * 0.1, 0.5, 1);
+      const opacity = THREE.MathUtils.clamp(1 - Math.abs(diff) * 0.5, 1, 1);
       card.material.opacity = opacity;
       card.material.transparent = true;
       card.visible = true;
@@ -330,7 +330,6 @@ function onMouseMove(e) {
     const idx = cards.indexOf(obj);
     const n = cards.length;
     const activeIdx = mod(activeIndex.value, n);
-    // only allow hover for the active card
     if (idx === activeIdx) {
       if (hoveredMesh !== obj) {
         hoveredMesh = obj;
@@ -571,13 +570,14 @@ onUnmounted(() => {
 .carousel-title,
 .carousel-subtitle {
   transition:
-    transform 1000ms ease,
+    transform 800ms ease,
     opacity 500ms ease;
 }
 
 .carousel-title.changed,
 .carousel-subtitle.changed {
-  transform: translateY(24px);
+  transition-duration: 300ms;
   opacity: 0;
+  transform: translateY(20px);
 }
 </style>
